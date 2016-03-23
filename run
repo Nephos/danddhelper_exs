@@ -1,0 +1,4 @@
+#!/usr/bin/env elixir
+
+require Code
+Code.load_file("main.exs")
