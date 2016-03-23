@@ -4,13 +4,6 @@ defmodule Dice do
   """
   defstruct values: [[]]
 
-  @doc """
-  Returns: `Dice` like 1D6
-  """
-  def new() do
-    %Dice{values: [[1,2,3,4,5,6]]}
-  end
-
   # note: when implement `Enum` instead of is_list ?
   @doc """
   Returns: `Dice` struct having every values specified in parameter
@@ -25,13 +18,12 @@ defmodule Dice do
   def new(str) when is_bitstring(str) do
     cond do
       str =~ ~r/\d+d\d+/i ->
-        cap = Regex.named_captures(~r/(?<nb>\d+)d(?<faces>\d+)/, str)
+        cap = Regex.named_captures(~r/(?<nb>\d+)d(?<faces>\d+)/i, str)
         nb = String.to_integer(cap["nb"])
         faces = String.to_integer(cap["faces"])
-        Enum.map(1..nb, fn(_) ->
+        new(Enum.map(1..nb, fn(_) ->
           Enum.to_list(1..faces)
-        end)
-        new()
+        end))
       str =~ ~r/\d+/ ->
         new([[String.to_integer(str)]])
     end
