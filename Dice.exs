@@ -1,6 +1,6 @@
 defmodule Dice do
   @moduledoc """
-  `Dice` is a structure that contains a constant or a random value
+  `Dice` is a structure that contain a constant or a random value
   """
   defstruct values: [[]]
 
