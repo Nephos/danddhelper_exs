@@ -5,8 +5,7 @@ defmodule Dice do
   defstruct values: [[]]
 
   @doc """
-  Constructor
-  returns a `Dice` like 1D6
+  Returns: `Dice` like 1D6
   """
   def new() do
     %Dice{values: [[1,2,3,4,5,6]]}
@@ -14,13 +13,15 @@ defmodule Dice do
 
   # note: when implement `Enum` instead of is_list ?
   @doc """
-  Constructor
-  returns a `Dice` struct having every values specified in parameter
+  Returns: `Dice` struct having every values specified in parameter
   """
   def new(values) when is_list(values) do
     %Dice{values: values}
   end
 
+  @doc """
+  Returns: `Dice` struct parsed from a string "nDf" or "n"
+  """
   def new(str) when is_bitstring(str) do
     cond do
       str =~ ~r/\d+d\d+/i ->
@@ -36,20 +37,18 @@ defmodule Dice do
     end
   end
 
-  def max(d) do
-    Enum.max(d.values)
-  end
-
-  def min(d) do
-    Enum.min(d.values)
-  end
-
+  @doc """
+  Returns: `Dice` negated (every values in the `Dice` are negated)
+  """
   def neg(d) do
     %Dice{values: Enum.map(d.values, fn(arr) ->
       Enum.map(arr, &(-(&1)))
     end)}
   end
 
+  @doc """
+  Returns: `Integer` random based on the `Dice`
+  """
   def test(d) do
     Enum.reduce(d.values, 0, fn(right, left) ->
       left + Enum.random(right)
