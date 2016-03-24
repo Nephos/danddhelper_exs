@@ -5,7 +5,7 @@ defmodule RollInterface do
 
     roll = Roll.new(input)
 
-    IO.puts "#{Roll.to_string(roll)} ... #{Roll.test(roll)}"
+    IO.puts "#{Roll.to_string(roll)} ... #{Roll.test(roll, true, true)}"
     IO.puts ""
 
     infinite_loop()

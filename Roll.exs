@@ -43,6 +43,25 @@ defmodule Roll do
     end)
   end
 
+  def test(roll, details, stringify) do
+    if details == false do
+      test(roll)
+    else
+      values = Enum.map(roll.dice, fn(e) ->
+        Dice.test(e)
+      end)
+      if stringify == true do
+        str = Enum.reduce(values, nil, fn(right, left) ->
+          if is_nil(left) do "#{right}" else "#{right}, #{left}" end
+        end)
+        total = Enum.sum(values)
+        "#{str} = #{total}"
+      else
+        values
+      end
+    end
+  end
+
   def to_string(roll) do
     Enum.reduce(roll.dice, nil, fn(right, left) ->
       cond do
