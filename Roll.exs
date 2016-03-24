@@ -37,19 +37,13 @@ defmodule Roll do
   @doc """
   Returns: `Integer` random based on the `Dice` stored
   """
-  def test(roll) do
-    Enum.reduce(roll.dice, 0, fn(right, left) ->
-      left + Dice.test(right)
+  def test(roll, details\\false, stringify\\false) do
+    values = Enum.map(roll.dice, fn(e) ->
+      Dice.test(e)
     end)
-  end
-
-  def test(roll, details, stringify) do
     if details == false do
-      test(roll)
+      Enum.sum(values)
     else
-      values = Enum.map(roll.dice, fn(e) ->
-        Dice.test(e)
-      end)
       if stringify == true do
         str = Enum.reduce(values, nil, fn(right, left) ->
           if is_nil(left) do "#{right}" else "#{right}, #{left}" end
