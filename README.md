@@ -4,4 +4,4 @@
 
 # Usage
 
-> ./run
+> rlwrap ./run

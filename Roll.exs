@@ -1,3 +1,7 @@
+defmodule RollParse do
+  defexception message: "Cannot parse the Roll"
+end
+
 defmodule Roll do
   @moduledoc """
   `Roll` is a structure that contain a list of dice
@@ -10,28 +14,33 @@ defmodule Roll do
   returns a `Dice` struct having every values specified in parameter
   """
   def new(str) when is_bitstring(str) do
-    %Roll{dice: parse([], str)}
+    %Roll{dice: parse([], str, "+")}
   end
 
-  def parse(dice, rest) when is_list(dice) and is_bitstring(rest) do
-    # rest = remaining not parsed `String`
-    # dice = `Dice` parsed from the string
-    cap = Regex.named_captures(~r/(?<value>((\d+(d|D)\d+)|(\d+))) *(?<rest>.*)/, rest)
-    die = Dice.new(cap["value"])
-    rest = String.strip(cap["rest"])
-    cap = Regex.named_captures(~r/(?<sign>[\-\+]) ?(?<rest>.+)/, rest)
-    # if there is a malus
-    if cap["sign"] == "-" do
-      Dice.neg(die)
+  def parse_first_die(str) do
+    # (Sign? Value) (NSign Rest)?
+    Regex.named_captures(~r/(?<sign>[\+\-])? *(?<value>(\d+d\d+)|(\d+))(?<rest>( *(?<rest_sign>[\+\-])? *((\d+d\d+)|(\d+)))*)/i, str)
+  end
+
+  def parse(roll, rest, sign) when is_list(roll) and is_bitstring(rest) and is_bitstring(sign) do
+    cap = parse_first_die(rest)
+    if is_nil(cap["value"]) do
+      raise RollParse, "Cannot parse the dice `#{rest}`: sign=#{cap["sign"]} value=#{cap["value"]} next_sign=#{cap["next_sign"]} rest=#{cap["rest"]}"
     end
-    # parse the rest
-    rest = cap["rest"]
-    parse(dice ++ [die], rest)
-  end
 
-  # parsing ending
-  def parse(dice, rest) when is_list(dice) and is_nil(rest) do
-    dice
+    # value = `Dice` parsed from the string
+    value = Dice.new(cap["value"])
+    if sign == "-" and cap["sign"] != "-" do
+      value = Dice.neg(value)
+    end
+
+    # rest = remaining not parsed `String`
+    cond do
+      String.length(cap["rest"]) == 0 ->
+        roll ++ [value]
+      true ->
+        parse(roll ++ [value], cap["rest"], cap["rest_sign"])
+    end
   end
 
   @doc """
