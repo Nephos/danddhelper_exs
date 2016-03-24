@@ -7,9 +7,13 @@ defmodule RollInterface do
       input == "exit\n" ->
         :ok
       true ->
-        roll = Roll.new(String.trim_trailing(input, "\n"))
-        IO.puts "#{Roll.to_string(roll)} ... #{Roll.test(roll, true, true)}"
-        IO.puts ""
+        try do
+          roll = Roll.new(String.trim_trailing(input, "\n"))
+          IO.puts "#{Roll.to_string(roll)} ... #{Roll.test(roll, true, true)}"
+          IO.puts ""
+        rescue
+          e in RollParserError -> IO.puts e.message
+        end
         infinite_loop()
     end
 

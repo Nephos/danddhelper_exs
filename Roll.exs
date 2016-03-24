@@ -1,4 +1,4 @@
-defmodule RollParse do
+defmodule RollParserError do
   defexception message: "Cannot parse the Roll"
 end
 
@@ -25,7 +25,7 @@ defmodule Roll do
   def parse(roll, rest, sign) when is_list(roll) and is_bitstring(rest) and is_bitstring(sign) do
     cap = parse_first_die(rest)
     if is_nil(cap["value"]) do
-      raise RollParse, "Cannot parse the dice `#{rest}`: sign=#{cap["sign"]} value=#{cap["value"]} next_sign=#{cap["next_sign"]} rest=#{cap["rest"]}"
+      raise RollParserError, "Cannot parse the dice `#{rest}`: sign=#{cap["sign"]} value=#{cap["value"]} next_sign=#{cap["next_sign"]} rest=#{cap["rest"]}"
     end
 
     # value = `Dice` parsed from the string
