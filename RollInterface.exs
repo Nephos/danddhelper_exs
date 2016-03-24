@@ -1,19 +1,19 @@
 defmodule RollInterface do
 
   def infinite_loop do
-    input = IO.gets "Input a roll: "
+    input = String.strip(IO.gets("Input a roll: "))
 
     cond do
-      input == "exit\n" ->
+      Regex.match? ~r/^e(x(it)?)?$/, input ->
         :ok
       true ->
         try do
-          roll = Roll.new(String.trim_trailing(input, "\n"))
+          roll = Roll.new(input)
           IO.puts "#{Roll.to_string(roll)} ... #{Roll.test(roll, true, true)}"
-          IO.puts ""
         rescue
           e in RollParserError -> IO.puts e.message
         end
+        IO.puts ""
         infinite_loop()
     end
 

@@ -19,7 +19,7 @@ defmodule Roll do
 
   def parse_first_die(str) do
     # (Sign? Value) (NSign Rest)?
-    Regex.named_captures(~r/(?<sign>[\+\-])? *(?<value>(\d+d\d+)|(\d+))(?<rest>( *(?<rest_sign>[\+\-])? *((\d+d\d+)|(\d+)))*)/i, str)
+    Regex.named_captures(~r/^ *(?<sign>[\+\-])? *(?<value>(\d+d\d+)|(\d+))(?<rest>( *(?<rest_sign>[\+\-])? *((\d+d\d+)|(\d+)))*) *$/i, str)
   end
 
   def parse(roll, rest, sign) when is_list(roll) and is_bitstring(rest) and is_bitstring(sign) do
