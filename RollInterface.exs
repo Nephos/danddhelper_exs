@@ -24,7 +24,6 @@ defmodule RollInterface do
       true ->
         cap = Regex.named_captures(~r/^(?<name>[A-Za-z]\w*) +(?<roll>.+)$/, input)
         add_obj = !is_nil(cap)
-        IO.puts "add_obj:#{add_obj}, name:#{cap["name"]}, roll:#{cap["roll"]}"
 
         input = cond do
           add_obj -> cap["roll"]
