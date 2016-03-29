@@ -1,7 +1,12 @@
 #!/usr/bin/env sh
 
-if [ -f $(whereis elixir | cut -d' ' -f2) ]; then \
-  elixir main.exs
+if [ -f $(whereis elixir | cut -d' ' -f2) ]; then
+  cmd="elixir"
+  if [ -f $(whereis rlwrap | cut -d' ' -f2) ]; then
+    cmd="rlwrap elixir"
+  fi
+  if [ "$1" = "" ]; then eval "$cmd main_roll.exs" ; fi
+  if [ "$1" = "opti" ]; then eval "$cmd main_opti.exs" ; fi
 else
   echo "Please install Elixir before any actions"
 fi
