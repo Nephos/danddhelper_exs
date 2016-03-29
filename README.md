@@ -5,10 +5,10 @@
 # Usage
 
 ```sh
-rlwrap ./run
+./run [opti]
 ```
 
-## Commands
+## Commands for Roll mode (default)
 
 You can use the following commands:
 
@@ -17,7 +17,7 @@ You can use the following commands:
 - ``delete NAME``: remove a saved named roll
 - *empty line*: roll every saved rolls
 
-## Example
+### Example
 
 > Input a roll: 1d6
 >
@@ -82,4 +82,39 @@ You can use the following commands:
 >
 >
 > Input a roll: exit
+>
+
+## Commands for Opti mode
+
+You can use the following commands:
+
+- max: maximum damages inflicted in one round
+- min: minimum damages inflicted in one round
+- mean: average damages inflicted in one round
+
+### Todo
+
+- handle critical damages and fumble cases
+
+### Example
+
+> Input a command: max 20 14/14/7 5d6+5+19
+>
+> [max] attacks: 0.7 / 0.7 / 0.35, with 5D6 + 5 + 19 damages => 37.8 + 37.8 + 18.9 => 94.5
+>
+>
+>
+> Input a command: max 10 14/14/7 5d6+5+19
+>
+> [max] attacks: 1.0 / 1.0 / 0.85, with 5D6 + 5 + 19 damages => 54.0 + 54.0 + 45.9 => 153.9
+>
+>
+>
+> Input a command: mean 20 14/14/7 5d6+5+19
+>
+> [mean] attacks: 0.7 / 0.7 / 0.35, with 5D6 + 5 + 19 damages => 29.05 + 29.05 + 14.53 => 72.63
+>
+>
+>
+> Input a command: exit
 >

@@ -2,6 +2,31 @@ defmodule RollParserError do
   defexception message: "Cannot parse the Roll"
 end
 
+defmodule RollMacro do
+  defmacro for_every_die(action) do
+    quote do
+      def unquote(action)(roll, details\\false, stringify\\false) do
+        values = Enum.map(roll.dice, fn(e) ->
+          Dice.unquote(action)(e)
+        end)
+        if details == false do
+          Enum.sum(values)
+        else
+          if stringify == true do
+            str = Enum.reduce(values, nil, fn(right, left) ->
+              if is_nil(left) do "#{right}" else "#{right}, #{left}" end
+            end)
+            total = Enum.sum(values)
+            "#{str} = #{total}"
+          else
+            values
+          end
+        end
+      end
+    end
+  end
+end
+
 defmodule Roll do
   @moduledoc """
   `Roll` is a structure that contain a list of dice
@@ -43,27 +68,11 @@ defmodule Roll do
     end
   end
 
-  @doc """
-  Returns: `Integer` random based on the `Dice` stored
-  """
-  def test(roll, details\\false, stringify\\false) do
-    values = Enum.map(roll.dice, fn(e) ->
-      Dice.test(e)
-    end)
-    if details == false do
-      Enum.sum(values)
-    else
-      if stringify == true do
-        str = Enum.reduce(values, nil, fn(right, left) ->
-          if is_nil(left) do "#{right}" else "#{right}, #{left}" end
-        end)
-        total = Enum.sum(values)
-        "#{str} = #{total}"
-      else
-        values
-      end
-    end
-  end
+  require RollMacro
+  RollMacro.for_every_die(:test)
+  RollMacro.for_every_die(:max)
+  RollMacro.for_every_die(:min)
+  RollMacro.for_every_die(:mean)
 
   def to_string(roll) do
     Enum.reduce(roll.dice, nil, fn(right, left) ->
