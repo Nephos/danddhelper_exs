@@ -23,7 +23,7 @@ defmodule OptiInterface do
         roll = Roll.new(cap["damages"])
         armor = (String.to_integer(cap["armor"])) * 0.05
         bonus = Attack.parse(cap["bonus"])
-        bonus = Enum.map(bonus, fn(e) -> Enum.min([1.0, 1.0 + (e * 0.05) - armor]) end)
+        bonus = Enum.map(bonus, fn(e) -> Enum.max([0.0, Enum.min([1.0, 1.0 + (e * 0.05) - armor])]) end)
         cmd = cap["cmd"]
 
         result = cond do

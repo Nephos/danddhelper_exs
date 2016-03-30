@@ -86,6 +86,8 @@ You can use the following commands:
 
 ## Commands for Opti mode
 
+*Computes the damages you can inflict based on the average accuracy of the attacks.*
+
 You can use the following commands:
 
 - max: maximum damages inflicted in one round
