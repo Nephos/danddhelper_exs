@@ -90,6 +90,7 @@ You can use the following commands:
 
 You can use the following commands:
 
+- average_attack: set or display the average roll of an attack (on a d20)
 - max: maximum damages inflicted in one round
 - min: minimum damages inflicted in one round
 - mean: average damages inflicted in one round
@@ -100,21 +101,39 @@ You can use the following commands:
 
 ### Example
 
-> Input a command: max 20 14/14/7 5d6+5+19
+> Input a command: max 25 16/16/9 5d6+5+15
 >
-> [max] attacks: 0.7 / 0.7 / 0.35, with 5D6 + 5 + 19 damages => 37.8 + 37.8 + 18.9 => 94.5
->
->
->
-> Input a command: max 10 14/14/7 5d6+5+19
->
-> [max] attacks: 1.0 / 1.0 / 0.85, with 5D6 + 5 + 19 damages => 54.0 + 54.0 + 45.9 => 153.9
+> [max] attacks: 0.6 / 0.6 / 0.25, with 5D6 + 5 + 15 damages => 30.0 + 30.0 + 12.5 => 72.5
 >
 >
 >
-> Input a command: mean 20 14/14/7 5d6+5+19
+> Input a command: mean 25 16/16/9 5d6+5+15
 >
-> [mean] attacks: 0.7 / 0.7 / 0.35, with 5D6 + 5 + 19 damages => 29.05 + 29.05 + 14.53 => 72.63
+> [mean] attacks: 0.6 / 0.6 / 0.25, with 5D6 + 5 + 15 damages => 22.5 + 22.5 + 9.38 => 54.38
+>
+>
+>
+> Input a command: min 25 16/16/9 5d6+5+15
+>
+> [min] attacks: 0.6 / 0.6 / 0.25, with 5D6 + 5 + 15 damages => 15.0 + 15.0 + 6.25 => 36.25
+>
+>
+>
+> Input a command: average_attack = 12
+>
+> Set average_attack = 60.0 %
+>
+>
+>
+> Input a command: min 25 16/16/9 5d6+5+15
+>
+> [min] attacks: 0.75 / 0.75 / 0.4, with 5D6 + 5 + 15 damages => 18.75 + 18.75 + 10.0 => 47.5
+>
+>
+>
+> Input a command: average_attack
+>
+> Current average attack roll : 12.0 (60.0 %)
 >
 >
 >
