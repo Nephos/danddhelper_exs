@@ -1,6 +1,6 @@
 defmodule OptiInterface do
 
-  def infinite_loop(average_touch\\10.5) when is_float(average_touch) do
+  def infinite_loop(average_attack\\10.5) when is_float(average_attack) do
     IO.puts ""
 
     input = String.strip(IO.gets("Input a command: "))
@@ -9,33 +9,38 @@ defmodule OptiInterface do
       Regex.match? ~r/^e(x(it)?)?$/, input ->
         :ok
 
-      Regex.match? ~r/^average(_touch)? = (\d+(\.\d+)?)$/, input ->
-        cap = Regex.named_captures(~r/\w+ = (?<average_touch>\d+(\.\d+)?)/, input)
-        average_touch = cond do
-          Regex.match? ~r/^\d+\.\d+$/, cap["average_touch"] -> String.to_float(cap["average_touch"])
-          Regex.match? ~r/^\d+$/, cap["average_touch"] -> String.to_integer(cap["average_touch"])
-          true -> raise "What the fuck"
+      Regex.match? ~r/^average(_attack)?$/, input ->
+        IO.puts "Current average attack roll : #{average_attack} (#{average_attack * 100 * 0.05} %)"
+        infinite_loop(average_attack)
+
+      Regex.match? ~r/^average(_attack)? = (\d+(\.\d+)?)$/, input ->
+        cap = Regex.named_captures(~r/\w+ = (?<average_attack>\d+(\.\d+)?)/, input)
+        average_attack = cond do
+          Regex.match? ~r/^\d+\.\d+$/, cap["average_attack"] -> String.to_float(cap["average_attack"])
+          Regex.match? ~r/^\d+$/, cap["average_attack"] -> String.to_integer(cap["average_attack"]) * 1.0
+          true -> raise "Impossible error: cannot parse this"
         end
-        IO.puts "Set average_touch = #{average_touch * 100 * 0.05} %"
-        infinite_loop(average_touch * 1.0)
+        IO.puts "Set average_attack = #{average_attack * 100 * 0.05} %"
+        infinite_loop(average_attack)
 
       Regex.match? ~r/^h(elp)?$/, input ->
         IO.puts "Help>"
         IO.puts ""
-        IO.puts "average_touch = ?"
+        IO.puts "average_attack = ?"
+        IO.puts "average_attack"
         IO.puts ""
         IO.puts "cmd ? ?/?/... ?D? + ?"
         IO.puts "max CA attack_bonus attack_damages"
         IO.puts "min CA attack_bonus attack_damages"
         IO.puts "mean CA attack_bonus attack_damages"
-        infinite_loop(average_touch)
+        infinite_loop(average_attack)
 
       Regex.match? ~r/(max|min|mean) .+/, input ->
         cap = Regex.named_captures(~r/(?<cmd>\w+) (?<armor>\d+) (?<bonus>([\+\-]?\d+)(\/([\+\-]?\d+))*) (?<damages>.+)/, input)
         roll = Roll.new(cap["damages"])
         armor = (String.to_integer(cap["armor"]))
         bonus = Attack.parse(cap["bonus"])
-        bonus = Enum.map(bonus, fn(e) -> Enum.max([0.0, Enum.min([1.0, (average_touch * 0.100) + (e * 0.05) - (armor * 0.05)])]) end)
+        bonus = Enum.map(bonus, fn(e) -> Enum.max([0.0, Enum.min([1.0, (average_attack * 0.100) + (e * 0.05) - (armor * 0.05)])]) end)
         cmd = cap["cmd"]
 
         result = cond do
@@ -50,10 +55,11 @@ defmodule OptiInterface do
 
         IO.puts "[#{cmd}] attacks: #{bonus_str}, with #{Roll.to_string(roll)} damages => #{res_str} => #{tot_str}"
 
-        infinite_loop(average_touch)
+        infinite_loop(average_attack)
 
       true ->
-        infinite_loop(average_touch)
+        IO.puts "Cannot parse this sequence '#{input}'"
+        infinite_loop(average_attack)
 
     end
 
