@@ -24,15 +24,16 @@ defmodule OptiInterface do
         infinite_loop(average_attack)
 
       Regex.match? ~r/^h(elp)?$/, input ->
-        IO.puts "Help>"
-        IO.puts ""
-        IO.puts "average_attack = ?"
-        IO.puts "average_attack"
-        IO.puts ""
-        IO.puts "cmd ? ?/?/... ?D? + ?"
-        IO.puts "max CA attack_bonus attack_damages"
-        IO.puts "min CA attack_bonus attack_damages"
-        IO.puts "mean CA attack_bonus attack_damages"
+        IO.puts "Help>
+
+  average_attack = ?
+  average_attack
+
+  cmd ? ?/?/... ?D? + ?
+  max CA attack_bonus attack_damages
+  min CA attack_bonus attack_damages
+  mean CA attack_bonus attack_damages"
+
         infinite_loop(average_attack)
 
       Regex.match? ~r/(max|min|mean) .+/, input ->
